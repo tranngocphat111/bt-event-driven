@@ -10,6 +10,36 @@ import type {
     UserResponse,
 } from "../types/domain";
 
+const SESSION_KEY = "movie-event-fe-session";
+
+const getSessionToken = (): string | null => {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) {
+        return null;
+    }
+
+    try {
+        const parsed = JSON.parse(raw) as { token?: string };
+        return parsed.token?.trim() ? parsed.token.trim() : null;
+    } catch {
+        return null;
+    }
+};
+
+const withAuthHeaders = (
+    headers: Record<string, string> = {},
+): Record<string, string> => {
+    const token = getSessionToken();
+    if (!token) {
+        return headers;
+    }
+
+    return {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+    };
+};
+
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === "object" && value !== null;
 
@@ -123,19 +153,25 @@ export const register = async (request: RegisterRequest): Promise<AuthResponse> 
 };
 
 export const loadUsers = async (): Promise<UserResponse[]> => {
-    const response = await fetch(`${appConfig.gatewayUrl}/api/users`);
+    const response = await fetch(`${appConfig.gatewayUrl}/api/users`, {
+        headers: withAuthHeaders(),
+    });
     const payload = await parseResponse(response);
     return parseUsers(payload);
 };
 
 export const loadMovies = async (): Promise<MovieResponse[]> => {
-    const response = await fetch(`${appConfig.gatewayUrl}/api/movies?page=0&size=20`);
+    const response = await fetch(`${appConfig.gatewayUrl}/api/movies?page=0&size=20`, {
+        headers: withAuthHeaders(),
+    });
     const payload = await parseResponse(response);
     return parseMovies(payload);
 };
 
 export const loadMovieDetail = async (movieId: number): Promise<MovieResponse> => {
-    const response = await fetch(`${appConfig.gatewayUrl}/api/movies/${movieId}`);
+    const response = await fetch(`${appConfig.gatewayUrl}/api/movies/${movieId}`, {
+        headers: withAuthHeaders(),
+    });
     const payload = await parseResponse(response);
     return extractDataField(payload) as MovieResponse;
 };
@@ -145,6 +181,9 @@ export const loadMovieShowtimes = async (
 ): Promise<ShowtimeResponse[]> => {
     const response = await fetch(
         `${appConfig.gatewayUrl}/api/movies/${movieId}/showtimes`,
+        {
+            headers: withAuthHeaders(),
+        },
     );
     const payload = await parseResponse(response);
     return parseShowtimes(payload);
@@ -154,8 +193,10 @@ export const loadShowtimeSeats = async (
     showtimeId: number,
 ): Promise<ShowtimeSeatResponse[]> => {
     const response = await fetch(
-        `${appConfig.movieServiceUrl}/api/movies/${showtimeId}/seats`,
-        // `${appConfig.movieServiceUrl}/api/showtimes/${showtimeId}/seats`,
+        `${appConfig.gatewayUrl}/api/showtimes/${showtimeId}/seats`,
+        {
+            headers: withAuthHeaders(),
+        },
     );
     const payload = await parseResponse(response);
     return parseShowtimeSeats(payload);
@@ -173,57 +214,14 @@ export const createBooking = async (
         headers.Authorization = `Bearer ${token.trim()}`;
     }
 
-    const bookingBody = JSON.stringify(request);
-    const fallbackStatuses = new Set([404, 500, 502, 503, 504]);
+    const response = await fetch(`${appConfig.gatewayUrl}/api/bookings`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(request),
+    });
 
-    try {
-        const gatewayResponse = await fetch(`${appConfig.gatewayUrl}/api/bookings`, {
-            method: "POST",
-            headers,
-            body: bookingBody,
-        });
-
-        if (gatewayResponse.ok) {
-            const payload = await parseResponse(gatewayResponse);
-            return payload as BookingResponse;
-        }
-
-        if (
-            !appConfig.bookingServiceUrl ||
-            !fallbackStatuses.has(gatewayResponse.status)
-        ) {
-            await parseResponse(gatewayResponse);
-            throw new Error("Booking request failed");
-        }
-
-        const fallbackResponse = await fetch(
-            `${appConfig.bookingServiceUrl}/bookings`,
-            {
-                method: "POST",
-                headers,
-                body: bookingBody,
-            },
-        );
-
-        const fallbackPayload = await parseResponse(fallbackResponse);
-        return fallbackPayload as BookingResponse;
-    } catch (gatewayError) {
-        if (!appConfig.bookingServiceUrl) {
-            throw gatewayError;
-        }
-
-        const fallbackResponse = await fetch(
-            `${appConfig.bookingServiceUrl}/bookings`,
-            {
-                method: "POST",
-                headers,
-                body: bookingBody,
-            },
-        );
-
-        const fallbackPayload = await parseResponse(fallbackResponse);
-        return fallbackPayload as BookingResponse;
-    }
+    const payload = await parseResponse(response);
+    return payload as BookingResponse;
 };
 
 export const loadBookings = async (
@@ -245,12 +243,16 @@ export const loadBookings = async (
         ? `${appConfig.gatewayUrl}/api/bookings?${suffix}`
         : `${appConfig.gatewayUrl}/api/bookings`;
 
-    const response = await fetch(endpoint);
+    const response = await fetch(endpoint, {
+        headers: withAuthHeaders(),
+    });
     const payload = await parseResponse(response);
     return parseBookings(payload);
 };
 
 export const loadPaymentHealth = async (): Promise<unknown> => {
-    const response = await fetch(`${appConfig.notificationUrl}/payments/health`);
+    const response = await fetch(`${appConfig.gatewayUrl}/api/payments/health`, {
+        headers: withAuthHeaders(),
+    });
     return parseResponse(response);
 };

@@ -28,11 +28,11 @@ server:
 
 app:
   cors:
-    allowed-origins: http://192.168.1.29:8085
+    allowed-origins: http://localhost:8085
   aws:
     access-key: ${AWS_ACCESS_KEY_ID:}
     secret-key: ${AWS_SECRET_ACCESS_KEY:}
-    region: ${AWS_REGION:}
+    region: ${AWS_REGION:ap-southeast-1}
     s3:
       bucket-name: ${S3_BUCKET:}
       poster-prefix: ${S3_POSTER_PREFIX:}

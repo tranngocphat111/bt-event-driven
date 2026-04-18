@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
-    private static final String FRONTEND_ORIGIN = "http://192.168.1.29:8085";
+    private static final String FRONTEND_ORIGIN = "http://localhost:8085";
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

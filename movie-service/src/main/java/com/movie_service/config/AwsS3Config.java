@@ -13,9 +13,15 @@ import software.amazon.awssdk.services.s3.S3Client;
 @EnableConfigurationProperties(AwsProperties.class)
 public class AwsS3Config {
 
+    private static final String DEFAULT_REGION = "ap-southeast-1";
+
     @Bean
     public S3Client s3Client(AwsProperties awsProperties) {
-        Region region = Region.of(awsProperties.getRegion());
+        String regionValue = awsProperties.getRegion();
+        if (regionValue == null || regionValue.isBlank()) {
+            regionValue = DEFAULT_REGION;
+        }
+        Region region = Region.of(regionValue);
 
         if (awsProperties.getAccessKey() == null || awsProperties.getAccessKey().isBlank()) {
             return S3Client.builder()

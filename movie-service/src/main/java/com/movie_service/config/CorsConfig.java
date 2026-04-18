@@ -8,6 +8,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
@@ -23,10 +24,11 @@ public class CorsConfig {
         config.setAllowCredentials(true);
 
         // Lấy từ yml
-        List<String> origins = Arrays.asList(
-                corsProperties.getAllowedOrigins().split(",")
-        );
-        config.setAllowedOrigins(origins);
+        List<String> originPatterns = Arrays.stream(corsProperties.getAllowedOrigins().split(","))
+            .map(String::trim)
+            .filter(value -> !value.isBlank())
+            .collect(Collectors.toList());
+        config.setAllowedOriginPatterns(originPatterns);
 
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("*"));
