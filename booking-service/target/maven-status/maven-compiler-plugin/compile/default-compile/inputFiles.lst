@@ -1,4 +1,5 @@
 C:\IUH\Nam4\KTVTKPM\booking-service\src\main\java\iuh\fit\edu\bookingservice\BookingServiceApplication.java
+C:\IUH\Nam4\KTVTKPM\booking-service\src\main\java\iuh\fit\edu\bookingservice\config\CorsConfig.java
 C:\IUH\Nam4\KTVTKPM\booking-service\src\main\java\iuh\fit\edu\bookingservice\config\MessagingProperties.java
 C:\IUH\Nam4\KTVTKPM\booking-service\src\main\java\iuh\fit\edu\bookingservice\config\RabbitMqConfig.java
 C:\IUH\Nam4\KTVTKPM\booking-service\src\main\java\iuh\fit\edu\bookingservice\controller\BookingController.java
