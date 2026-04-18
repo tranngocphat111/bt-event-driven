@@ -1,0 +1,161 @@
+.seat-selection-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.seat-selection-container h2 {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.showtime-info {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.seat {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 2px solid #ddd;
+}
+
+.seat-available {
+  background-color: #ffffff;
+  border-color: #999;
+  cursor: pointer;
+}
+
+.seat-available:hover {
+  background-color: #e7f3ff;
+  border-color: #007bff;
+}
+
+.seat-selected {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.seat-booked {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+  cursor: not-allowed;
+}
+
+.screen {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #999;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.seats-layout {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.row-label {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+}
+
+.seats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.seat {
+  width: 35px;
+  height: 35px;
+  border: 2px solid #999;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.seat:hover:not(:disabled) {
+  background-color: #e7f3ff;
+  border-color: #007bff;
+}
+
+.seat.seat-selected {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.seat.seat-booked {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+  color: white;
+  cursor: not-allowed;
+}
+
+.seat:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.seat-selection-summary {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid #ddd;
+}
+
+.seat-selection-summary p {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.seat-selection-summary .btn-primary {
+  width: 100%;
+  max-width: 400px;
+}

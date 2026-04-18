@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie_service.dto.*;
 import com.movie_service.entity.enums.MovieStatus;
 import com.movie_service.service.MovieService;
+import com.movie_service.service.ShowtimeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -20,6 +21,7 @@ public class MovieController {
 
     private final MovieService movieService;
     private final ObjectMapper objectMapper;
+    private final ShowtimeService showtimeService;
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ApiResponse<MovieResponseDTO>> createMovie(
@@ -96,5 +98,17 @@ public class MovieController {
     public ResponseEntity<ApiResponse<List<ShowtimeResponseDTO>>> getShowtimesByMovie(@PathVariable Long movieId) {
         List<ShowtimeResponseDTO> response = movieService.getShowtimesByMovie(movieId);
         return ResponseEntity.ok(ApiResponse.success(response, "Showtimes fetched successfully"));
+    }
+
+    @GetMapping("/showtimes/{showtimeId}/seats")
+    public ResponseEntity<ApiResponse<List<ShowtimeSeatDTO>>> getSeatsByShowtime(@PathVariable Long showtimeId) {
+        List<ShowtimeSeatDTO> response = showtimeService.getSeatsByShowtime(showtimeId);
+        return ResponseEntity.ok(ApiResponse.success(response, "Showtime seats fetched successfully"));
+    }
+
+    @GetMapping("/showtimes/{showtimeId}/booked-seats")
+    public ResponseEntity<ApiResponse<List<SeatResponseDTO>>> getBookedSeats(@PathVariable Long showtimeId) {
+        List<SeatResponseDTO> response = showtimeService.getBookedSeatsByShowtime(showtimeId);
+        return ResponseEntity.ok(ApiResponse.success(response, "Booked seats fetched successfully"));
     }
 }

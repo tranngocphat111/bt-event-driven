@@ -1,121 +1,197 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import { LoginForm } from './components/LoginForm';
+import { RegisterForm } from './components/RegisterForm';
+import { MovieList } from './components/MovieList';
+import { ShowtimeSelection } from './components/ShowtimeSelection';
+import { SeatSelection } from './components/SeatSelection';
+import { Payment } from './components/Payment';
+import { SuccessNotification } from './components/SuccessNotification';
+import { authAPI } from './api';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Authentication states
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [username, setUsername] = useState('');
 
+  // Navigation states
+  const [currentScreen, setCurrentScreen] = useState('movies'); // movies, showtime, seats, payment
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [bookingSuccess, setBookingSuccess] = useState(null);
+
+  // Check authentication status on mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    if (token && username) {
+      setIsAuthenticated(true);
+      setUsername(username);
+    }
+  }, []);
+
+  // Authentication handlers
+  const handleLoginSuccess = () => {
+    setUsername(localStorage.getItem('username'));
+    setIsAuthenticated(true);
+    setShowRegister(false);
+  };
+
+  const handleRegisterSuccess = () => {
+    setUsername(localStorage.getItem('username'));
+    setIsAuthenticated(true);
+    setShowRegister(false);
+  };
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      await authAPI.logout(token);
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    setIsAuthenticated(false);
+    setCurrentScreen('movies');
+  };
+
+  // Movie selection handlers
+  const handleSelectMovie = (movie) => {
+    setSelectedMovie(movie);
+    setCurrentScreen('showtime');
+  };
+
+  const handleSelectShowtime = (showtime) => {
+    setSelectedShowtime(showtime);
+    setCurrentScreen('seats');
+  };
+
+  const handleSelectSeats = (seats) => {
+    setSelectedSeats(seats);
+    setCurrentScreen('payment');
+  };
+
+  const handlePaymentSuccess = (bookingData) => {
+    setBookingSuccess(bookingData);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentScreen('movies');
+    setSelectedMovie(null);
+    setSelectedShowtime(null);
+    setSelectedSeats([]);
+    setBookingSuccess(null);
+  };
+
+  // If not authenticated, show login/register
+  if (!isAuthenticated) {
+    return (
+      <div className="app-container">
+        <div className="navbar">
+          <h1>🎬 Đặt Vé Xem Phim</h1>
+        </div>
+        <div className="auth-container">
+          {showRegister ? (
+            <div>
+              <RegisterForm onRegisterSuccess={handleRegisterSuccess} />
+              <div className="auth-switch">
+                <p>
+                  Đã có tài khoản?{' '}
+                  <button onClick={() => setShowRegister(false)}>
+                    Đăng Nhập
+                  </button>
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <LoginForm onLoginSuccess={handleLoginSuccess} />
+              <div className="auth-switch">
+                <p>
+                  Chưa có tài khoản?{' '}
+                  <button onClick={() => setShowRegister(true)}>
+                    Đăng Ký
+                  </button>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // If authenticated and booking is successful, show success notification
+  if (bookingSuccess) {
+    return (
+      <div className="app-container">
+        <div className="navbar">
+          <h1>🎬 Đặt Vé Xem Phim</h1>
+          <div className="navbar-right">
+            <span className="username">Xin chào {username}</span>
+            <button onClick={handleLogout}>Đăng Xuất</button>
+          </div>
+        </div>
+        <SuccessNotification
+          bookingId={bookingSuccess.bookingId}
+          totalPrice={bookingSuccess.totalPrice}
+          seats={bookingSuccess.seats}
+          onClose={handleBackToHome}
+        />
+      </div>
+    );
+  }
+
+  // Main app screens
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-container">
+      <div className="navbar">
+        <h1>🎬 Đặt Vé Xem Phim</h1>
+        <div className="navbar-right">
+          <span className="username">Xin chào {username}</span>
+          <button onClick={handleLogout}>Đăng Xuất</button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
+      <main className="main-content">
+        {currentScreen === 'movies' && (
+          <MovieList onSelectMovie={handleSelectMovie} />
+        )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {currentScreen === 'showtime' && selectedMovie && (
+          <ShowtimeSelection
+            movieId={selectedMovie.id}
+            movieTitle={selectedMovie.title}
+            onSelectShowtime={handleSelectShowtime}
+            onBack={handleBackToHome}
+          />
+        )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {currentScreen === 'seats' && selectedShowtime && (
+          <SeatSelection
+            showtimeId={selectedShowtime.id}
+            showtime={selectedShowtime}
+            onConfirm={handleSelectSeats}
+            onBack={() => setCurrentScreen('showtime')}
+          />
+        )}
+
+        {currentScreen === 'payment' && selectedShowtime && selectedSeats.length > 0 && (
+          <Payment
+            showtime={selectedShowtime}
+            seats={selectedSeats}
+            movieTitle={selectedMovie.title}
+            onPaymentSuccess={handlePaymentSuccess}
+            onBack={() => setCurrentScreen('seats')}
+          />
+        )}
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

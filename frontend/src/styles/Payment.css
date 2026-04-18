@@ -1,0 +1,113 @@
+.payment-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.payment-container h2 {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+}
+
+.payment-summary {
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.summary-section {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summary-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 16px;
+}
+
+.summary-section p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.seat-price {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px !important;
+  padding-top: 10px;
+  border-top: 2px solid #ddd;
+  margin-top: 10px;
+}
+
+.seat-price strong {
+  color: #007bff;
+  font-size: 18px;
+}
+
+.payment-form {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.payment-form h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 16px;
+}
+
+.payment-methods {
+  margin-bottom: 20px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.payment-option:hover {
+  background-color: #f9f9f9;
+}
+
+.payment-option input[type='radio'] {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.payment-option input[type='radio']:checked + span {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.payment-option span {
+  font-size: 14px;
+}
+
+.payment-form .btn-primary {
+  width: 100%;
+  margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+  .payment-summary {
+    grid-template-columns: 1fr;
+  }
+}
