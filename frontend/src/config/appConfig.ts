@@ -1,7 +1,7 @@
 const normalizeBaseUrl = (rawUrl: string): string => rawUrl.trim().replace(/\/+$/g, "");
 
 const gatewayUrl = normalizeBaseUrl(
-    import.meta.env.VITE_GATEWAY_URL ?? "http://localhost:8085",
+    import.meta.env.VITE_GATEWAY_URL ?? "http://localhost:3000",
 );
 
 const wsEndpoint = normalizeBaseUrl(

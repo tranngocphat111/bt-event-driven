@@ -4,9 +4,9 @@ spring:
   config:
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:mariadb://192.168.1.177:3306/movie_ticket_db
-    username: team
-    password: 123456
+    url: jdbc:mariadb://localhost:3306/movie_ticket_db
+    username: root
+    password: 12345
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
@@ -28,7 +28,7 @@ server:
 
 app:
   cors:
-    allowed-origins: http://localhost:8085
+    allowed-origins: http://192.168.1.8:8085
   aws:
     access-key: ${AWS_ACCESS_KEY_ID:}
     secret-key: ${AWS_SECRET_ACCESS_KEY:}

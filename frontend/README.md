@@ -31,7 +31,7 @@ npm run dev
 Mac dinh frontend chay tai:
 
 ```bash
-http://192.168.1.177/
+http://localhost/
 ```
 
 Luu y:

@@ -252,8 +252,8 @@ CREATE TABLE dead_letter_queue (
 -- ------------------------------------------------------------
 INSERT INTO users (username, email, password, full_name, phone, role) VALUES
 ('admin',     'admin@movieticket.vn',    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Quản Trị Viên',    '0901000001', 'ADMIN'),
-('nguyen_an', 'an.nguyen@gmail.com',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Nguyễn Văn An',    '0901234567', 'USER'),
-('tran_binh', 'binh.tran@gmail.com',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Trần Thị Bình',    '0912345678', 'USER'),
+('nguyen_an', 'an.nguyen@gmail.com',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Nguyễn Văn An',    '090123457', 'USER'),
+('tran_binh', 'binh.tran@gmail.com',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Trần Thị Bình',    '091234578', 'USER'),
 ('le_cuong',  'cuong.le@yahoo.com',      '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Lê Văn Cường',     '0923456789', 'USER'),
 ('pham_dung', 'dung.pham@outlook.com',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Phạm Minh Dũng',   '0934567890', 'USER'),
 ('hoang_em',  'em.hoang@gmail.com',      '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lh8y', 'Hoàng Thị Em',     '0945678901', 'USER'),
@@ -485,7 +485,7 @@ INSERT INTO booking_seats (booking_id, seat_id, showtime_id) VALUES
 INSERT INTO payments (payment_code, booking_id, user_id, amount, payment_method, status, transaction_ref, paid_at) VALUES
 ('PAY-20240415-00001', 1, 2, 190000, 'MOMO',        'SUCCESS', 'MOMO-TXN-8823741', NOW() - INTERVAL 2 HOUR),
 ('PAY-20240415-00002', 2, 3, 120000, 'VNPAY',       'SUCCESS', 'VNP-TXN-9912345',  NOW() - INTERVAL 3 HOUR),
-('PAY-20240415-00003', 3, 4, 255000, 'CREDIT_CARD', 'SUCCESS', 'CC-TXN-11234567',  NOW() - INTERVAL 4 HOUR),
+('PAY-20240415-00003', 3, 4, 255000, 'CREDIT_CARD', 'SUCCESS', 'CC-TXN-1123457',  NOW() - INTERVAL 4 HOUR),
 ('PAY-20240415-00004', 4, 5, 220000, 'ZALOPAY',     'FAILED',  NULL,               NULL),
 ('PAY-20240415-00005', 5, 6, 280000, 'MOMO',        'SUCCESS', 'MOMO-TXN-5566778', NOW() - INTERVAL 1 HOUR),
 ('PAY-20240415-00006', 7, 8, 190000, 'ATM',         'SUCCESS', 'ATM-TXN-3321456',  NOW() - INTERVAL 30 MINUTE),
