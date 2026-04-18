@@ -13,17 +13,17 @@ const gatewayUrl = useDevProxy
 const notificationUrl = useDevProxy
     ? ""
     : normalizeBaseUrl(
-        import.meta.env.VITE_NOTIFICATION_URL ?? "http://192.168.1.155:8084",
+        import.meta.env.VITE_GATEWAY_URL ?? "http://192.168.1.155:8084",
     );
 
 const movieServiceUrl = useDevProxy
     ? ""
     : normalizeBaseUrl(
-        import.meta.env.VITE_MOVIE_SERVICE_URL ?? "http://192.168.1.179:8082",
+        import.meta.env.VITE_GATEWAY_URL ?? "http://192.168.1.179:8082",
     );
 
 const bookingServiceUrl = normalizeBaseUrl(
-    import.meta.env.VITE_BOOKING_SERVICE_URL ?? "",
+    import.meta.env.VITE_GATEWAY_URL ?? "",
 );
 
 export const appConfig = {
