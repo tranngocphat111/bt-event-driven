@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/login").permitAll()
                         .requestMatchers("/api/users").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/users/verify-token").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable());
 
