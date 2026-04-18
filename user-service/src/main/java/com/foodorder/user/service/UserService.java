@@ -78,8 +78,8 @@ public class UserService {
         );
 
         rabbitTemplate.convertAndSend(
-                "cinema.exchange",
-                "user.registered",
+                "movie.booking.events",
+                "USER_REGISTERED",
                 event
         );
 

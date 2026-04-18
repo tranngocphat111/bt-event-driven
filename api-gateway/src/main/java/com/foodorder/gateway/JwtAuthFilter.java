@@ -23,6 +23,9 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         // Allow unauthenticated auth endpoints from user-service.
         if (path.startsWith("/api/users/login")
             || path.startsWith("/api/users/register")
+                || path.startsWith("/api/users/verify-token")
+                || path.startsWith("/api/movies")
+                || path.startsWith("/api/movies/**")
             || path.startsWith("/api/v1/auth/refresh")) {
             return chain.filter(exchange);
         }
