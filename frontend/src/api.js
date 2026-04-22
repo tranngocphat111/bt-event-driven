@@ -1,5 +1,5 @@
 // API Gateway base URL
-const API_GATEWAY_URL = 'http://localhost:8085/api';
+const API_GATEWAY_URL = 'http://192.168.1.145:8085/api';
 
 export const authAPI = {
   register: (userData) =>
